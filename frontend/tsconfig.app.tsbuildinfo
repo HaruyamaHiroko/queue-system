@@ -1,0 +1,1 @@
+{"root":["./src/App.tsx","./src/main.tsx","./src/types.ts","./src/vite-env.d.ts","./src/api/client.ts","./src/components/ConfirmModal.tsx","./src/components/FacilityHeader.tsx","./src/components/RefreshButton.tsx","./src/hooks/usePolling.ts","./src/screens/AdminScreen.tsx","./src/screens/DisplayScreen.tsx","./src/screens/UserScreen.tsx"],"version":"5.9.3"}
