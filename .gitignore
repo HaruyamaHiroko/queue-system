@@ -1,0 +1,18 @@
+# 依存パッケージ
+node_modules/
+
+# ビルド成果物
+dist/
+backend/dist/
+
+# 環境変数(本物の値が入るため除外。.env.exampleはコミットする)
+.env
+.env.local
+
+# Lambdaデプロイ用パッケージ
+backend/function.zip
+backend/dist/node_modules/
+
+# OS・エディタ生成物
+.DS_Store
+*.log
