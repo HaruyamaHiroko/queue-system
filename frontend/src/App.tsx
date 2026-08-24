@@ -3,7 +3,7 @@ import DisplayScreen from "./screens/DisplayScreen";
 import UserScreen from "./screens/UserScreen";
 import AdminScreen from "./screens/AdminScreen";
 
-// ルーティング方針:
+// ルーティング方針(HashRouterのため実際のURLは "/#/" の形になる):
 //   "/"      … A. 共有ディスプレイ画面(待合室設置用、個人情報なし)
 //   "/me"    … B. 利用者向け画面(個人のスマートフォン等)
 //   "/admin" … C. 管理者操作画面
