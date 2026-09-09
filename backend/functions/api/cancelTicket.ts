@@ -6,7 +6,7 @@ import { GetCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 import { docClient, TABLE_TICKETS } from "../../shared/dynamodb";
 import { getDateKey, padTicketNumber } from "../../shared/dateKey";
 import { buildSuccessResponse } from "../../shared/response";
-import { getPathSegment, parseJsonBody } from "../../shared/request";
+import { getHeader, getPathSegment, parseJsonBody } from "../../shared/request";
 import {
   ConflictError,
   ForbiddenError,
@@ -24,6 +24,8 @@ interface CancelTicketRequestBody {
 export async function cancelTicket(
   event: APIGatewayProxyEventV2
 ): Promise<APIGatewayProxyStructuredResultV2> {
+  const requestOrigin = getHeader(event, "Origin");
+
   // パスは "/tickets/{ticketNumber}/cancel" の形式。
   // セグメント: [0]="tickets" [1]=ticketNumber [2]="cancel"
   const rawTicketNumber = getPathSegment(event, 1);
@@ -77,5 +79,5 @@ export async function cancelTicket(
     status: "cancelled",
   };
 
-  return buildSuccessResponse(200, responseBody);
+  return buildSuccessResponse(200, responseBody, requestOrigin);
 }

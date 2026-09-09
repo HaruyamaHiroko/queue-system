@@ -16,14 +16,16 @@ import {
   padTicketNumber,
 } from "../../shared/dateKey";
 import { buildSuccessResponse } from "../../shared/response";
+import { getHeader } from "../../shared/request";
 import { CreateTicketResponse, TicketItem } from "../../shared/types";
 
 // POST /tickets — 発券
 // detail-design.md 3.1 の処理フローに対応。
 // エラーはthrowするのみとし、catchはルーター(index.ts)に一本化する。
 export async function createTicket(
-  _event: APIGatewayProxyEventV2
+  event: APIGatewayProxyEventV2
 ): Promise<APIGatewayProxyStructuredResultV2> {
+  const requestOrigin = getHeader(event, "Origin");
   const now = new Date();
   const dateKey = getDateKey(now);
   const counterId = getCounterId(now);
@@ -63,5 +65,5 @@ export async function createTicket(
     ticketToken,
   };
 
-  return buildSuccessResponse(201, responseBody);
+  return buildSuccessResponse(201, responseBody, requestOrigin);
 }

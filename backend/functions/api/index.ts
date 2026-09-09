@@ -6,6 +6,7 @@ import { getMyStatus } from "./getMyStatus";
 import { callNext } from "./callNext";
 import { buildCorsHeaders } from "../../shared/cors";
 import { handleError } from "../../shared/response";
+import { getHeader } from "../../shared/request";
 import { RouteNotFoundError } from "../../shared/errors";
 
 // 単一のLambda関数で全エンドポイントを処理するルーター。
@@ -15,13 +16,15 @@ import { RouteNotFoundError } from "../../shared/errors";
 export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   const method = event.requestContext.http.method;
   const path = event.rawPath;
+  // 許可オリジンの判定に使う(shared/cors.ts参照。FRONTEND_ORIGINにカンマ区切りで複数指定可能)
+  const requestOrigin = getHeader(event, "Origin");
 
   // ブラウザが送るCORSプリフライトリクエスト(OPTIONS)に対応。
   // Authorizationヘッダーを送るcall-next呼び出し等でブラウザが自動的に送信する。
   if (method === "OPTIONS") {
     return {
       statusCode: 204,
-      headers: buildCorsHeaders(),
+      headers: buildCorsHeaders(requestOrigin),
       body: "",
     };
   }
@@ -47,6 +50,6 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
       `指定されたパスが見つかりません: ${method} ${path}`
     );
   } catch (error) {
-    return handleError(error);
+    return handleError(error, requestOrigin);
   }
 };

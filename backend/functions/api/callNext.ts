@@ -23,6 +23,8 @@ import { CallNextResponse, CounterItem, TicketItem } from "../../shared/types";
 export async function callNext(
   event: APIGatewayProxyEventV2
 ): Promise<APIGatewayProxyStructuredResultV2> {
+  const requestOrigin = getHeader(event, "Origin");
+
   const expectedToken = process.env.ADMIN_TOKEN;
   const authHeader = getHeader(event, "Authorization");
   if (!expectedToken || authHeader !== `Bearer ${expectedToken}`) {
@@ -93,7 +95,7 @@ export async function callNext(
     }
 
     const responseBody: CallNextResponse = { calledNumber };
-    return buildSuccessResponse(200, responseBody);
+    return buildSuccessResponse(200, responseBody, requestOrigin);
   }
 
   // 上限まで繰り返しても確定しなかった(=残り全てキャンセル済みだった)場合

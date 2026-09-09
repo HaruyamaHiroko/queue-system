@@ -12,7 +12,7 @@ import {
 } from "../../shared/dynamodb";
 import { getCounterId, getDateKey } from "../../shared/dateKey";
 import { buildSuccessResponse } from "../../shared/response";
-import { parseJsonBody } from "../../shared/request";
+import { getHeader, parseJsonBody } from "../../shared/request";
 import { NotFoundError, ValidationError } from "../../shared/errors";
 import { CounterItem, StatusResponse, TicketItem } from "../../shared/types";
 
@@ -25,6 +25,8 @@ interface GetMyStatusRequestBody {
 export async function getMyStatus(
   event: APIGatewayProxyEventV2
 ): Promise<APIGatewayProxyStructuredResultV2> {
+  const requestOrigin = getHeader(event, "Origin");
+
   const body = parseJsonBody<GetMyStatusRequestBody>(event);
   if (!body.ticketToken) {
     throw new ValidationError("ticketTokenは必須です");
@@ -82,5 +84,5 @@ export async function getMyStatus(
     waitingCount,
   };
 
-  return buildSuccessResponse(200, responseBody);
+  return buildSuccessResponse(200, responseBody, requestOrigin);
 }
