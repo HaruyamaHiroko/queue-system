@@ -178,12 +178,21 @@ cd ..
 ```bash
 aws lambda create-function \
   --function-name queue-system-api \
-  --runtime nodejs20.x \
+  --runtime nodejs24.x \
   --role arn:aws:iam::<ACCOUNT_ID>:role/queue-system-lambda-role \
   --handler functions/api/index.handler \
   --zip-file fileb://function.zip \
   --timeout 10 \
   --memory-size 256 \
+  --region ap-northeast-1
+```
+
+**ランタイムの保守について**: Node.jsランタイムには終了時期(EOL)がある。AWSからランタイム終了通知のメールが届いたら、以下でコード変更なしに切り替えられる(async/awaitベースのハンドラーである限り、コールバック形式廃止等の影響を受けない)。
+
+```bash
+aws lambda update-function-configuration \
+  --function-name queue-system-api \
+  --runtime <新しいランタイム名> \
   --region ap-northeast-1
 ```
 
