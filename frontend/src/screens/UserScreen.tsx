@@ -148,6 +148,10 @@ export default function UserScreen() {
               <p className="user-card__number user-card__number--accent">
                 {String(myTicket.ticketNumber).padStart(3, "0")}
               </p>
+
+              {data && data.calledNumber === myTicket.ticketNumber && (
+                <p className="user-card__called">※ お呼びです ※</p>
+              )}
               <div className="user-card__stats">
                 <div className="user-card__stat">
                   <p className="user-card__stat-label">呼出し中</p>
